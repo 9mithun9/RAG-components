@@ -1,0 +1,33 @@
+import os
+from langchain_community.document_loaders import TwitterTweetLoader
+from dotenv import load_dotenv
+
+class TwitterFetcher:
+    def __init__(self, bearer_token: str):
+        self.bearer_token = bearer_token
+
+    def fetch_tweets(self, username: str, count: int = 50):
+        """
+        Fetches tweets from a specific Twitter user.
+        """
+        loader = TwitterTweetLoader.from_bearer_token(
+            oauth2_bearer_token=self.bearer_token,
+            twitter_users=[username],
+            number_tweets=count
+        )
+        documents = loader.load()
+        return documents
+
+# Example usage
+if __name__ == "__main__":
+    load_dotenv()  # Loads the .env file
+    bearer = os.getenv("TWITTER_BEARER_TOKEN")
+
+    if not bearer:
+        print("Error: Bearer token not found. Please set TWITTER_BEARER_TOKEN in your .env file.")
+    else:
+        fetcher = TwitterFetcher(bearer)
+        tweets = fetcher.fetch_tweets("elonmusk", count=10)
+
+        for i, tweet in enumerate(tweets, start=1):
+            print(f"\nTweet {i}:\n{tweet.page_content}")
