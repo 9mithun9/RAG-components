@@ -1,7 +1,3 @@
-# %% [markdown]
-# # My Project Title
-# This is a markdown cell in Colab-style.
-
 from langchain_openai import OpenAIEmbeddings
 from dotenv import load_dotenv
 from langchain_community.vectorstores import Chroma
@@ -61,3 +57,5 @@ vector_store = Chroma(
 
 vector_store.add_documents(documents)
 print(vector_store.get(include=['embeddings','metadatas']))
+
+
